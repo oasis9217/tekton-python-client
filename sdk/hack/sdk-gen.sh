@@ -21,7 +21,7 @@ OPENAPI_GEN_URL="https://repo1.maven.org/maven2/org/openapitools/openapi-generat
 OPENAPI_GEN_JAR="sdk/hack/openapi-generator-cli.jar"
 SWAGGER_CODEGEN_CONF="sdk/hack/swagger_config.json"
 SWAGGER_CODEGEN_FILE="sdk/hack/swagger.json"
-SWAGGER_CODEGEN_SOURCE="https://raw.githubusercontent.com/tektoncd/pipeline/master/pkg/apis/pipeline/v1beta1/swagger.json"
+SWAGGER_CODEGEN_SOURCE="https://raw.githubusercontent.com/tektoncd/pipeline/main/pkg/apis/pipeline/v1/swagger.json"
 SDK_OUTPUT_PATH="./sdk/python"
 
 echo "Check the swagger.json file ..."

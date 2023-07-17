@@ -1,6 +1,6 @@
 # PodTemplate
 
-PodTemplate holds pod specific configuration
+Template holds pod specific configuration
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
@@ -9,6 +9,7 @@ Name | Type | Description | Notes
 **dns_config** | [**V1PodDNSConfig**](https://github.com/kubernetes-client/python/blob/master/kubernetes/docs/V1PodDNSConfig.md) |  | [optional] 
 **dns_policy** | **str** | Set DNS policy for the pod. Defaults to \&quot;ClusterFirst\&quot;. Valid values are &#39;ClusterFirst&#39;, &#39;Default&#39; or &#39;None&#39;. DNS parameters given in DNSConfig will be merged with the policy selected with DNSPolicy. | [optional] 
 **enable_service_links** | **bool** | EnableServiceLinks indicates whether information about services should be injected into pod&#39;s environment variables, matching the syntax of Docker links. Optional: Defaults to true. | [optional] 
+**env** | [**list[V1EnvVar]**](https://github.com/kubernetes-client/python/blob/master/kubernetes/docs/V1EnvVar.md) | List of environment variables that can be provided to the containers belonging to the pod. | [optional] 
 **host_aliases** | [**list[V1HostAlias]**](V1HostAlias.md) | HostAliases is an optional list of hosts and IPs that will be injected into the pod&#39;s hosts file if specified. This is only valid for non-hostNetwork pods. | [optional] 
 **host_network** | **bool** | HostNetwork specifies whether the pod may use the node network namespace | [optional] 
 **image_pull_secrets** | [**list[V1LocalObjectReference]**](https://github.com/kubernetes-client/python/blob/master/kubernetes/docs/V1LocalObjectReference.md) | ImagePullSecrets gives the name of the secret used by the pod to pull the image if specified | [optional] 
@@ -18,6 +19,7 @@ Name | Type | Description | Notes
 **scheduler_name** | **str** | SchedulerName specifies the scheduler to be used to dispatch the Pod | [optional] 
 **security_context** | [**V1PodSecurityContext**](https://github.com/kubernetes-client/python/blob/master/kubernetes/docs/V1PodSecurityContext.md) |  | [optional] 
 **tolerations** | [**list[V1Toleration]**](https://github.com/kubernetes-client/python/blob/master/kubernetes/docs/V1Toleration.md) | If specified, the pod&#39;s tolerations. | [optional] 
+**topology_spread_constraints** | [**list[V1TopologySpreadConstraint]**](V1TopologySpreadConstraint.md) | TopologySpreadConstraints controls how Pods are spread across your cluster among failure-domains such as regions, zones, nodes, and other user-defined topology domains. | [optional] 
 **volumes** | [**list[V1Volume]**](https://github.com/kubernetes-client/python/blob/master/kubernetes/docs/V1Volume.md) | List of volumes that can be mounted by containers belonging to the pod. More info: https://kubernetes.io/docs/concepts/storage/volumes | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

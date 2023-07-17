@@ -52,6 +52,7 @@ class PodTemplate(object):
         'dns_config': 'V1PodDNSConfig',
         'dns_policy': 'str',
         'enable_service_links': 'bool',
+        'env': 'list[V1EnvVar]',
         'host_aliases': 'list[V1HostAlias]',
         'host_network': 'bool',
         'image_pull_secrets': 'list[V1LocalObjectReference]',
@@ -61,6 +62,7 @@ class PodTemplate(object):
         'scheduler_name': 'str',
         'security_context': 'V1PodSecurityContext',
         'tolerations': 'list[V1Toleration]',
+        'topology_spread_constraints': 'list[V1TopologySpreadConstraint]',
         'volumes': 'list[V1Volume]'
     }
 
@@ -70,6 +72,7 @@ class PodTemplate(object):
         'dns_config': 'dnsConfig',
         'dns_policy': 'dnsPolicy',
         'enable_service_links': 'enableServiceLinks',
+        'env': 'env',
         'host_aliases': 'hostAliases',
         'host_network': 'hostNetwork',
         'image_pull_secrets': 'imagePullSecrets',
@@ -79,10 +82,11 @@ class PodTemplate(object):
         'scheduler_name': 'schedulerName',
         'security_context': 'securityContext',
         'tolerations': 'tolerations',
+        'topology_spread_constraints': 'topologySpreadConstraints',
         'volumes': 'volumes'
     }
 
-    def __init__(self, affinity=None, automount_service_account_token=None, dns_config=None, dns_policy=None, enable_service_links=None, host_aliases=None, host_network=None, image_pull_secrets=None, node_selector=None, priority_class_name=None, runtime_class_name=None, scheduler_name=None, security_context=None, tolerations=None, volumes=None, local_vars_configuration=None):  # noqa: E501
+    def __init__(self, affinity=None, automount_service_account_token=None, dns_config=None, dns_policy=None, enable_service_links=None, env=None, host_aliases=None, host_network=None, image_pull_secrets=None, node_selector=None, priority_class_name=None, runtime_class_name=None, scheduler_name=None, security_context=None, tolerations=None, topology_spread_constraints=None, volumes=None, local_vars_configuration=None):  # noqa: E501
         """PodTemplate - a model defined in OpenAPI"""  # noqa: E501
         if local_vars_configuration is None:
             local_vars_configuration = Configuration()
@@ -93,6 +97,7 @@ class PodTemplate(object):
         self._dns_config = None
         self._dns_policy = None
         self._enable_service_links = None
+        self._env = None
         self._host_aliases = None
         self._host_network = None
         self._image_pull_secrets = None
@@ -102,6 +107,7 @@ class PodTemplate(object):
         self._scheduler_name = None
         self._security_context = None
         self._tolerations = None
+        self._topology_spread_constraints = None
         self._volumes = None
         self.discriminator = None
 
@@ -115,6 +121,8 @@ class PodTemplate(object):
             self.dns_policy = dns_policy
         if enable_service_links is not None:
             self.enable_service_links = enable_service_links
+        if env is not None:
+            self.env = env
         if host_aliases is not None:
             self.host_aliases = host_aliases
         if host_network is not None:
@@ -133,6 +141,8 @@ class PodTemplate(object):
             self.security_context = security_context
         if tolerations is not None:
             self.tolerations = tolerations
+        if topology_spread_constraints is not None:
+            self.topology_spread_constraints = topology_spread_constraints
         if volumes is not None:
             self.volumes = volumes
 
@@ -246,6 +256,29 @@ class PodTemplate(object):
         """
 
         self._enable_service_links = enable_service_links
+
+    @property
+    def env(self):
+        """Gets the env of this PodTemplate.  # noqa: E501
+
+        List of environment variables that can be provided to the containers belonging to the pod.  # noqa: E501
+
+        :return: The env of this PodTemplate.  # noqa: E501
+        :rtype: list[V1EnvVar]
+        """
+        return self._env
+
+    @env.setter
+    def env(self, env):
+        """Sets the env of this PodTemplate.
+
+        List of environment variables that can be provided to the containers belonging to the pod.  # noqa: E501
+
+        :param env: The env of this PodTemplate.  # noqa: E501
+        :type: list[V1EnvVar]
+        """
+
+        self._env = env
 
     @property
     def host_aliases(self):
@@ -451,6 +484,29 @@ class PodTemplate(object):
         """
 
         self._tolerations = tolerations
+
+    @property
+    def topology_spread_constraints(self):
+        """Gets the topology_spread_constraints of this PodTemplate.  # noqa: E501
+
+        TopologySpreadConstraints controls how Pods are spread across your cluster among failure-domains such as regions, zones, nodes, and other user-defined topology domains.  # noqa: E501
+
+        :return: The topology_spread_constraints of this PodTemplate.  # noqa: E501
+        :rtype: list[V1TopologySpreadConstraint]
+        """
+        return self._topology_spread_constraints
+
+    @topology_spread_constraints.setter
+    def topology_spread_constraints(self, topology_spread_constraints):
+        """Sets the topology_spread_constraints of this PodTemplate.
+
+        TopologySpreadConstraints controls how Pods are spread across your cluster among failure-domains such as regions, zones, nodes, and other user-defined topology domains.  # noqa: E501
+
+        :param topology_spread_constraints: The topology_spread_constraints of this PodTemplate.  # noqa: E501
+        :type: list[V1TopologySpreadConstraint]
+        """
+
+        self._topology_spread_constraints = topology_spread_constraints
 
     @property
     def volumes(self):
