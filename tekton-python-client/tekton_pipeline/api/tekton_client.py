@@ -12,12 +12,41 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import time
+import json
 from kubernetes import client, config
 
 from tekton_pipeline.constants import constants
 from tekton_pipeline.utils import utils
 # from tekton_pipeline.api.tekton_watch import watch as tekton_watch
+
+
+def exception_handler(exc):
+    if isinstance(exc, client.exceptions.ApiException):
+        exc_body = json.loads(exc.body)
+        return None, {
+            "status": exc.status,
+            "reason": exc.reason,
+            "message": exc_body["message"]
+        }
+    return None, {
+        "status": 500,
+        "message": exc
+    }
+
+
+def delete_keys(resource):
+    del resource["metadata"]["managedFields"]
+    return resource
+
+
+def k8s_resource_trimmer(resource):
+    if 'items' in resource:
+        resource = resource["items"]
+        return list(map(delete_keys, resource))
+
+    if isinstance(resource, dict):
+        return delete_keys(resource)
+    return
 
 
 class TektonClient(object):
@@ -72,7 +101,32 @@ class TektonClient(object):
 
         return outputs
 
-    def get(self, entity, name, namespace=None, watch=False, timeout_seconds=600):
+    def list(self, entity, namespace=None):
+        """
+        List the Tekton resources
+        :param entity: the tekton entity, currently supported values: ['task', 'taskrun', 'pipeline', 'pipelinerun']
+        :param namespace: defaults to current or default namespace
+        :return: Tekton resources
+        """
+        utils.check_entity(entity)
+
+        if namespace is None:
+            namespace = utils.get_default_target_namespace()
+
+        plural = str(entity).lower() + "s"
+
+        try:
+            return k8s_resource_trimmer(
+                self.api_instance.list_namespaced_custom_object(
+                    constants.TEKTON_GROUP,
+                    constants.TEKTON_VERSION,
+                    namespace,
+                    plural,
+                )), None
+        except Exception as e:
+            return exception_handler(e)
+
+    def get(self, entity, name, namespace=None, timeout_seconds=600):
         """
         Get the Tekton objects
         :param entity: the tekton entity, currently supported values: ['task', 'taskrun', 'pipeline', 'pipelinerun'].
@@ -88,29 +142,17 @@ class TektonClient(object):
 
         plural = str(entity).lower() + "s"
 
-        if watch:
-            pass
-            '''
-            # No watch for a moment 
-            
-            tekton_watch(
-                name=name,
-                plural=plural,
-                namespace=namespace,
-                timeout_seconds=timeout_seconds)
-            '''
-        else:
-            try:
-                return self.api_instance.get_namespaced_custom_object(
+        try:
+            return k8s_resource_trimmer(
+                self.api_instance.get_namespaced_custom_object(
                     constants.TEKTON_GROUP,
                     constants.TEKTON_VERSION,
                     namespace,
                     plural,
-                    name)
-            except client.rest.ApiException as e:
-                raise RuntimeError(
-                    "Exception when calling CustomObjectsApi->get_namespaced_custom_object:\
-                    %s\n" % e)
+                    name
+                )), None
+        except Exception as e:
+            return exception_handler(e)
 
     def patch(self, entity, name, body, namespace=None):
         """
