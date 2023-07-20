@@ -40,6 +40,7 @@ def get_tekton_plural(tekton):
     tekton_plural = str(tekton.kind).lower() + "s"
     return tekton_plural
 
+
 def check_entity(entity):
     valid_entities = ['task', 'taskrun', 'pipeline', 'pipelinerun']
     if entity not in valid_entities:

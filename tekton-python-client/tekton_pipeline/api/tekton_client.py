@@ -17,7 +17,7 @@ from kubernetes import client, config
 
 from tekton_pipeline.constants import constants
 from tekton_pipeline.utils import utils
-# from tekton_pipeline.api.tekton_watch import watch as tekton_watch
+from tekton_pipeline.models import V1Pipeline, V1PipelineRun, V1Task, V1TaskRun
 
 
 def exception_handler(exc):
@@ -72,7 +72,7 @@ class TektonClient(object):
         self.app_api = client.AppsV1Api()
         self.api_instance = client.CustomObjectsApi()
 
-    def create(self, entity, body, namespace=None):
+    def create(self, entity, body: V1Pipeline | V1PipelineRun | V1Task | V1TaskRun, namespace=None):
         """
         Create the Tekton entity
         :param entity: the tekton entity,  currently supported values: ['task', 'taskrun', 'pipeline', 'pipelinerun', 'clustertask']. 
@@ -88,18 +88,16 @@ class TektonClient(object):
         plural = str(entity).lower() + "s"
 
         try:
-            outputs = self.api_instance.create_namespaced_custom_object(
-                constants.TEKTON_GROUP,
-                constants.TEKTON_VERSION,
-                namespace,
-                plural,
-                body)
-        except client.rest.ApiException as e:
-            raise RuntimeError(
-                "Exception when calling CustomObjectsApi->create_namespaced_custom_object:\
-                 %s\n" % e)
-
-        return outputs
+            return k8s_resource_trimmer(
+                self.api_instance.create_namespaced_custom_object(
+                    constants.TEKTON_GROUP,
+                    constants.TEKTON_VERSION,
+                    namespace,
+                    plural,
+                    body
+                )), None
+        except Exception as e:
+            return exception_handler(e)
 
     def list(self, entity, namespace=None):
         """
@@ -172,17 +170,17 @@ class TektonClient(object):
         plural = str(entity).lower() + "s"
 
         try:
-            return self.api_instance.patch_namespaced_custom_object(
-                constants.TEKTON_GROUP,
-                constants.TEKTON_VERSION,
-                namespace,
-                plural,
-                name,
-                body)
-        except client.rest.ApiException as e:
-            raise RuntimeError(
-                "Exception when calling CustomObjectsApi->patch_namespaced_custom_object:\
-                 %s\n" % e)
+            return k8s_resource_trimmer(
+                self.api_instance.patch_namespaced_custom_object(
+                    constants.TEKTON_GROUP,
+                    constants.TEKTON_VERSION,
+                    namespace,
+                    plural,
+                    name,
+                    body
+                )), None
+        except Exception as e:
+            return exception_handler(e)
 
     def delete(self, entity, name, namespace=None):
         """
@@ -205,8 +203,7 @@ class TektonClient(object):
                 constants.TEKTON_VERSION,
                 namespace,
                 plural,
-                name)
-        except client.rest.ApiException as e:
-            raise RuntimeError(
-                "Exception when calling CustomObjectsApi->delete_namespaced_custom_object:\
-                 %s\n" % e)
+                name
+            ), None
+        except Exception as e:
+            return exception_handler(e)

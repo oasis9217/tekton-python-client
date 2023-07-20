@@ -5,13 +5,14 @@ import uvicorn
 from fastapi import Depends, FastAPI
 
 from .dependencies import tekton_client
-from .routers import pipelines
+from .routers import pipelines, tasks
 
 DEFAULT_NAMESPACE = "isw-tools"
 urllib3.disable_warnings()
 
 app = FastAPI()
 app.include_router(pipelines.router)
+app.include_router(tasks.router)
 
 
 @app.get("/")
