@@ -2,12 +2,11 @@ import sys
 import signal
 import urllib3
 import uvicorn
-from fastapi import Depends, FastAPI
+from fastapi import FastAPI
 
 from .dependencies import tekton_client
 from .routers import pipelines, tasks
 
-DEFAULT_NAMESPACE = "isw-tools"
 urllib3.disable_warnings()
 
 app = FastAPI()
@@ -17,7 +16,7 @@ app.include_router(tasks.router)
 
 @app.get("/")
 async def root():
-    return {"message": "Hello Bigger Applications!"}
+    return {"message": "Hello World!"}
 
 
 @app.on_event("startup")

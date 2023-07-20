@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   title: Tekton
   description: Tekton Pipeline
-  version: v0.17.2
+  version: v0.49.0
 servers:
 - url: /
 paths: {}
