@@ -1,5 +1,6 @@
-fastapi >= 0.100.0
+fastapi>=0.68.0
 kubernetes >= 26.0.0
+pydantic>=1.8.0
 setuptools >= 60.0.0
 urllib3 >= 1.26.0
-uvicorn >= 0.22.0
+uvicorn>=0.15.0
