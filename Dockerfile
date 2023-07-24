@@ -16,6 +16,6 @@ RUN python setup.py sdist bdist_wheel --dist-dir /tmp/dist
 WORKDIR /opt/app-root/src/tekton-fastapi
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80"]
-EXPOSE 80
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+EXPOSE 8000
 

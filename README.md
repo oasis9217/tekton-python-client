@@ -19,13 +19,14 @@ As it requires `tekton-pipelines`, you need to install it first. Refer to [READM
 
 
 ## Docker
+To locally build and test,
 ```
 kubectl login
 docker build -t tekton-api . 
 docker run --rm -p 80:80 -v ~/.kube/config:/opt/app-root/src/.kube/config tekton-api
 ```
 
-### Helm
+## Helm
 To test,
 ```
 helm template helm -n YOUR_NAMESPACE
@@ -33,6 +34,11 @@ helm template helm -n YOUR_NAMESPACE
 
 To package and install,
 ```
-helm pakcage helm
+helm package helm
 helm install tekton-api-server tekton-api-server-X.X.X.tgz -n YOUR_NAMESPACE
+```
+
+To uninstall,
+```
+helm uninstall tekton-api-server -n YOUR_NAMESPACE
 ```
