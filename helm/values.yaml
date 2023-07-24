@@ -1,0 +1,4 @@
+labels:
+  partOf: isw-dashboard
+
+imageUrl: jp2.icr.io/isw-dashboard/tekton-pipelines-api

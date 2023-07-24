@@ -1,0 +1,12 @@
+apiVersion: v2
+appVersion: "1.0.0"
+description: Tekton API server
+kubeVersion: ">= 1.22.0"
+maintainers:
+  - name: Songhui Ryu
+    url: https://github.com/oasis9217/tekton-python-client
+name: tekton-api-server
+sources:
+  - https://github.com/oasis9217/tekton-python-client
+type: application
+version: 1.0.0

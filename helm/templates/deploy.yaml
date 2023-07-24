@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "chart.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+        labels:
+          {{- include "chart.labels" . | nindent 10}}
+    spec:
+      containers:
+        - name: tekton-api
+          image: {{ .Values.imageUrl}}
+          ports:
+            - containerPort: 80
