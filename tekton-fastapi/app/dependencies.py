@@ -5,4 +5,4 @@ tekton_client = TektonClient()
 
 
 def test():
-    print(tekton_client)
+    print(True)

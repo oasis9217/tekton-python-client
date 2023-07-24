@@ -4,7 +4,6 @@ import urllib3
 import uvicorn
 from fastapi import FastAPI
 
-from .dependencies import tekton_client
 from .routers import pipelines, tasks
 
 urllib3.disable_warnings()
