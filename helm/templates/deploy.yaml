@@ -10,11 +10,12 @@ spec:
       {{- include "chart.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-        labels:
-          {{- include "chart.labels" . | nindent 10}}
+      labels:
+        {{- include "chart.labels" . | nindent 8}}
     spec:
+      serviceAccountName: {{ .Release.Name }}
       containers:
         - name: tekton-api
           image: {{ .Values.imageUrl}}
           ports:
-            - containerPort: 80
+            - containerPort: 8000
