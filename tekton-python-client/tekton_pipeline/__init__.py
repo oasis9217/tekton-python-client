@@ -31,7 +31,8 @@ from __future__ import absolute_import
 __version__ = "0.1"
 
 # import apis into sdk package
-
+from tekton_pipeline.api.tekton_client import TektonClient
+from tekton_pipeline.constants import constants
 # import ApiClient
 from tekton_pipeline.api_client import ApiClient
 from tekton_pipeline.configuration import Configuration
@@ -103,6 +104,3 @@ from tekton_pipeline.models.v1_workspace_binding import V1WorkspaceBinding
 from tekton_pipeline.models.v1_workspace_declaration import V1WorkspaceDeclaration
 from tekton_pipeline.models.v1_workspace_pipeline_task_binding import V1WorkspacePipelineTaskBinding
 from tekton_pipeline.models.v1_workspace_usage import V1WorkspaceUsage
-
-from tekton_pipeline.api.tekton_client import TektonClient
-from tekton_pipeline.constants import constants
