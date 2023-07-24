@@ -5,4 +5,5 @@ setuptools >= 60.0.0
 urllib3 >= 1.26.0
 uvicorn >= 0.15.0
 
-file:/tmp/dist/tekton_pipeline-0.1.4-py3-none-any.whl
+/tmp/dist/tekton_pipeline-0.1.4-py3-none-any.whl
+
