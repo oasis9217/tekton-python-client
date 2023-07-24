@@ -1,9 +1,9 @@
 # Tekton Python Client
 
-| Dir  | Description                   |
-|---|-------------------------------|
-| tekton-python-client  | Python package for Tekton API |
-| tekton-fastapi  | FastAPI server for Tekton API |
+| Dir  | Description |
+|---|---|
+| tekton-python-client | Python package for Tekton API |
+| tekton-fastapi | FastAPI server for Tekton API |
 
 
 ## tekton-python-client
@@ -15,3 +15,24 @@ The swagger document used for this SDK is v0.49.0 of [swagger.json](https://gith
 
 ## tekton-fastapi
 tekton-fastapi is a FastAPI server hosting API for Tekton.
+As it requires `tekton-pipelines`, you need to install it first. Refer to [README.md](./tekton-fastapi/README.md)
+
+
+## Docker
+```
+kubectl login
+docker build -t tekton-api . 
+docker run --rm -p 80:80 -v ~/.kube/config:/opt/app-root/src/.kube/config tekton-api
+```
+
+### Helm
+To test,
+```
+helm template helm -n YOUR_NAMESPACE
+```
+
+To package and install,
+```
+helm pakcage helm
+helm install tekton-api-server tekton-api-server-X.X.X.tgz -n YOUR_NAMESPACE
+```
