@@ -4,14 +4,15 @@ import urllib3
 import uvicorn
 from fastapi import FastAPI
 
-from .routers import pipelines, tasks, taskruns
+from .routers import pipelines, pipelineruns, tasks, taskruns
 
 urllib3.disable_warnings()
 
 app = FastAPI()
-app.include_router(pipelines.router)
 app.include_router(tasks.router)
 app.include_router(taskruns.router)
+app.include_router(pipelines.router)
+app.include_router(pipelineruns.router)
 
 
 @app.get("/")
