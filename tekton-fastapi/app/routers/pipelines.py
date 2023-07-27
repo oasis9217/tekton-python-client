@@ -120,20 +120,24 @@ async def update_pipeline(
     ],
     namespace: str | None = None
 ):
-    pipeline = utils.parse_body_to_tekton('V1Pipeline', pipeline_spec)
-    metadata = pipeline.metadata
+    try:
+        pipeline = utils.parse_body_to_tekton('V1Pipeline', pipeline_spec)
+        metadata = pipeline.metadata
 
-    if metadata is not None:
-        if pipeline_name != metadata.name:
-            raise ValueError("pipeline_name in path does not match with metadata.name in body")
-        if namespace is not None and namespace != metadata.namespace:
-            raise ValueError("namespace in query does not match with metadata.namespace in body")
+        if metadata is not None:
+            if pipeline_name != metadata.name:
+                raise ValueError("pipeline_name in path does not match with metadata.name in body")
+            if namespace is not None and namespace != metadata.namespace:
+                raise ValueError("namespace in query does not match with metadata.namespace in body")
 
-    response, err = tekton_client.patch(entity='pipeline', name=pipeline_name, body=pipeline, namespace=namespace)
-    if err is not None:
-        raise HTTPException(status_code=err['status'], detail=err['message'])
+        response, err = tekton_client.patch(entity='pipeline', name=pipeline_name, body=pipeline, namespace=namespace)
+        if err is not None:
+            raise HTTPException(status_code=err['status'], detail=err['message'])
 
-    return response
+        return response
+
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 
 @router.delete("/{pipeline_name}")
