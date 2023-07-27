@@ -23,7 +23,7 @@ To locally build and test,
 ```
 kubectl login
 docker build -t tekton-api . 
-docker run --rm -p 80:80 -v ~/.kube/config:/opt/app-root/src/.kube/config tekton-api
+docker run --rm -p 8000:8000 -v ~/.kube/config:/opt/app-root/src/.kube/config tekton-api
 ```
 
 ## Helm
