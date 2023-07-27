@@ -37,7 +37,7 @@ async def get_task(task_name: str, namespace: str | None = None):
 @router.post("/")
 async def create_task(
     task_spec: Annotated[
-        utils.TektonResource,
+        utils.JSONObject,
         Body(examples=[
             {
                   "apiVersion": "tekton.dev/v1beta1",
@@ -58,7 +58,8 @@ async def create_task(
                   }
             }
         ])
-    ]
+    ],
+    namespace: str | None = None
 ):
     # task_spec = V1Task(
     #     api_version='tekton.dev/v1beta1',
@@ -72,19 +73,29 @@ async def create_task(
     #         )]
     #     )
     # )
-    task, err = tekton_client.create(entity='task', body=task_spec)
+    try:
+        task = utils.parse_body_to_tekton('V1Task', task_spec)
+        metadata = task.metadata
 
-    if err is not None:
-        raise HTTPException(status_code=err['status'], detail=err['message'])
+        if metadata is not None:
+            if namespace is not None and namespace != metadata.namespace:
+                raise ValueError("namespace in query does not match with metadata.namespace in body")
 
-    return task
+        response, err = tekton_client.create(entity='task', body=task)
+        if err is not None:
+            raise HTTPException(status_code=err['status'], detail=err['message'])
+
+        return response
+
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 
 @router.put("/{task_name}")
 async def update_task(
     task_name: str,
     task_spec: Annotated[
-        utils.TektonResource,
+        utils.JSONObject,
         Body(
             examples=[
                 {
@@ -110,12 +121,24 @@ async def update_task(
     ],
     namespace: str | None = None
 ):
-    task, err = tekton_client.patch(entity='task', name=task_name, body=task_spec, namespace=namespace)
+    try:
+        task = utils.parse_body_to_tekton('V1Task', task_spec)
+        metadata = task.metadata
 
-    if err is not None:
-        raise HTTPException(status_code=err['status'], detail=err['message'])
+        if metadata is not None:
+            if task_name != metadata.name:
+                raise ValueError("task_name in path does not match with metadata.name in body")
+            if namespace is not None and namespace != metadata.namespace:
+                raise ValueError("namespace in query does not match with metadata.namespace in body")
 
-    return task
+        response, err = tekton_client.patch(entity='task', name=task_name, body=task, namespace=namespace)
+        if err is not None:
+            raise HTTPException(status_code=err['status'], detail=err['message'])
+
+        return response
+
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 
 @router.delete("/{task_name}")
