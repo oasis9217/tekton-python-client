@@ -37,10 +37,13 @@ def decode_keys(data):
     for key, value in _unpack(keys_to_snake_case(data)):
         if isinstance(value, dict):
             formatted[key] = decode_keys(value)
-        elif isinstance(value, list) and len(value) > 0:
-            formatted[key] = []
-            for _, val in enumerate(value):
-                formatted[key].append(decode_keys(val))
+        #
+        # Temporarily exclude array
+        #
+        # elif isinstance(value, list) and len(value) > 0:
+        #     formatted[key] = []
+        #     for _, val in enumerate(value):
+        #         formatted[key].append(decode_keys(val))
         else:
             formatted[key] = value
     return formatted
